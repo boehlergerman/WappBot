@@ -2,7 +2,7 @@
 
 Experimental project, which allows to detect the instant in which a new message is received and to carry out an automatic answer, with the possibility of giving personalized options.
 This project is based on an excellent application of an unofficial API for whatsapp, which is thanked below.
-https://github.com/boehlergerman/WebWhatsapp-Wrapper
+https://github.com/mukulhase/WebWhatsapp-Wrapper
 
 The main objective is to present a simple implementation without the need for large installations.
 
