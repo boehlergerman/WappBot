@@ -402,7 +402,7 @@ window.WAPI._newMessagesListener = window.Store.Msg.on('add', newMessage => {
   if (newMessage && newMessage.isNewMsg && !newMessage.isSentByMe) {
     let message = window.WAPI.processMessageObj(newMessage, false, false);
     if (message) {
-      var url = "http://localhost:3000/conversation";
+      var url = "https://wapp-bot.herokuapp.com/message";
       fetch(url, {
         method: "POST",
         headers: {
@@ -410,7 +410,7 @@ window.WAPI._newMessagesListener = window.Store.Msg.on('add', newMessage => {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ text: message.body })
+        body: JSON.stringify({ messageText: message.body })
       }).then(function (response) {
         response.json().then(post => window.WAPI.sendMessage(message.chatId._serialized, post.output.generic[0].text));
       })
