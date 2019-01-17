@@ -340,8 +340,7 @@ window.WappBot.toDataURL = (url) => {
 
 
 window.WappBot.sendByAPIWappBot = (newMessage, chatId) => {
-  var url = "https://wapp-bot.herokuapp.com/message";
-  fetch(url, {
+  fetch(window.WappBot.configWappBot.uriApi, {
     method: "POST",
     headers: {
       'Accept': 'application/json',
