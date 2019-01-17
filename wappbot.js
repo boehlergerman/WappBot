@@ -8,7 +8,7 @@ window.WappBot = {
     ignoreChat: [],
     messageInitial: {
       text: "Hello I'm WappBot send a reply \n",
-      image: "https://i.imgur.com/4ufAcMb.png"
+      image: null
     },
     messageIncorrect: "Incorrect option entered, we remind you that the options are: \n",
     messageOption: {
@@ -30,7 +30,7 @@ window.WappBot = {
           if (daysToChristmas > 0)
             return "There are " + daysToChristmas + " days to Christmas!"
         })(),
-        image: "https://i.imgur.com/GJXbceA.jpg"
+        image: null
       }
     }
   }
