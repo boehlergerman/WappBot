@@ -20,7 +20,7 @@ you must have a valid whatsapp account and access to whatsapp web
 
 ```sh
 Default configuration:
-
+ {
     useApi: false,
     uriApi: "https://wapp-bot.herokuapp.com/message",
     ignoreChat: [],
@@ -50,13 +50,15 @@ Default configuration:
         })(),
         image: null
       }
-    }
-
+  }
+```
+```sh
 Options:
   useApi                   [Bool] [Default False], allows you to use an API for message processing,
                            see the DialogFlow-Nodejs-WappBot repository.
                            
-  uriApi                   [String] URL of the api you wish to consult, you can use the proposed API, it's free :)
+  uriApi                   [String] URL of the api you wish to consult,
+                            you can use the proposed API, it's free :)
                             [WappBot-API](https://github.com/boehlergerman/DialogFlow-Nodejs-WappBotAPI)
   
   ignoreChat               [Array] prevents repeated messages, preventing a "hello" from being sent again
@@ -76,7 +78,8 @@ Options:
     |
     |
     |-> KeyOption          [String] identifier to be shown to the user, it is convenient to use a special
-          |                character at the beginning such as @ # $, to avoid misinterpreting the user's message.
+          |                 character at the beginning such as @ # $,
+          |                 to avoid misinterpreting the user's message.
           |
           |-> text         [String | Self-Invoking Anonymous Function] 
           |                  Text to display when the user enters the option properly
