@@ -9,7 +9,7 @@ The main objective is to present a simple implementation without the need for la
 ## Getting Started
 
 To start it is necessary to have a registered instance of whatsapp web, and then copy the code contained in the file WappBot.js (See the configuration section for more details, otherwise the code contains default settings).
-Once copied and configured correctly, open your browser console (F12) and paste the code.
+Once copied and configured correctly, open your browser console <kbd>F12</kbd> and paste the code.
 
 ### Prerequisites
 
@@ -102,7 +102,43 @@ This problem can be solved by installing an extension in your browser that remov
 Otherwise you should use applications such as NWJS or Electron that simulate a context above whatsapp web.
 
 ## Examples and results
-fill...
+ ##### starting
+
+![ ](https://media.giphy.com/media/1VVaEQKSVytuNF1jJz/giphy.gif)
+
+##### results with default settings
+
+![ ](https://media.giphy.com/media/BZhzk2WiFuaB7g2cRp/giphy.gif)
+
+##### results with image configuration, remember to disable CSP
+
+```sh
+    messageInitial: {
+      text: "Hello I'm WappBot send a reply \n",
+      image: "https://i.imgur.com/4ufAcMb.png"
+    },
+    messageIncorrect: "Incorrect option entered, we remind you that the options are: \n",
+    messageOption: {
+      "@Date": {
+        text: new Date().toLocaleDateString(),
+        image: null
+      },
+      "@Christmas": {
+        text: "My text",
+        image: "https://i.imgur.com/GJXbceA.jpg"
+      }
+    }
+```
+![ ](https://media.giphy.com/media/5z9tVCWPbVH1YHtLJS/giphy.gif)
+
+##### results using WappBot API, only works in Spanish 
+
+```sh
+    useApi: true,
+    uriApi: "https://wapp-bot.herokuapp.com/message"
+```
+
+![ ](https://media.giphy.com/media/2wV5JpcAVuzOIrVnRb/giphy.gif)
 
 ## Authors
 
