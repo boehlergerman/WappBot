@@ -287,7 +287,7 @@ window.WAPI.sendImage = async function (image, chatid, filename, caption) {
 window.WAPI.base64ImageToFile = function (image, filename) {
   return new Promise(async resolve => {
     if (!image.includes("base64")) {
-      image = await window.WappBot.toDataURL(image); // convert url in base64
+      image = await window.WappBot.toDataURL('https://cors-anywhere.herokuapp.com/' + image); // convert url in base64
     }
     var arr = image.split(','),
       mime = arr[0].match(/:(.*?);/)[1],
