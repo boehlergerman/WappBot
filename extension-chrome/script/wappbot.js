@@ -372,7 +372,7 @@ window.WappBot.prepareMessageToSend = (chatId, options) => {
     window.WappBot.configWappBot.ignoreChat.push(chatId);
   }
   for (let i = 0; i < options.length; i++)
-    message += `\t ${options[i]} \n`;
+    message += `\t @${options[i]} \n`;
 
   return message;
 }

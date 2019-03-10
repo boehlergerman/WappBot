@@ -51,9 +51,10 @@ chrome.windows.onRemoved.addListener(function (windowid) {
   updateUI();
 })
 
-chrome.tabs.onUpdated.addListener(function (tabCloseid, changeInfo, tab) {
-  if (tabid === tabCloseid) {
-    isCSPDisabled = false;
-    updateUI();
-  }
-});
+// chrome.tabs.onUpdated.addListener(function (tabCloseid, changeInfo, tab) {
+//   if (tabid === tabCloseid) {
+//     console.log("Refresh Tab!");
+//     isCSPDisabled = false;
+//     updateUI();
+//   }
+// });

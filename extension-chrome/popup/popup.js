@@ -1,51 +1,75 @@
 // Pure JS:
 "use strict";
 
-var choice = [];
-var choiceNumber = 0;
+var choice = {};
 var globalTag;
 
 document.addEventListener('DOMContentLoaded', function () {
     loadTags();
+    restoreData();
 
-    document.getElementById("chkApi").addEventListener("click", disable);
+    document.getElementById("chkApi").addEventListener("click", () => {
+        disable();
+        saveData();
+    });
     document.getElementById("confirm").addEventListener("click", confirm);
-    document.getElementById("choice").addEventListener("click", addChoice);
-});
+    document.getElementById("formChoice").addEventListener("submit", (e) => {
+        e.preventDefault();
+        document.getElementById("choice").removeAttribute("tooltip");
 
-function addChoice() {
-    const message = document.getElementById("txtMessage").value;
-    const imageUrl = document.getElementById("txtImage").value;
+        const message = document.getElementById("txtMessage");
+        const imageUrl = document.getElementById("txtImage");
+        const choiceKey = document.getElementById("txtChoiceName");
 
-    let element = {
-        text: message,
-        image: imageUrl === "" ? null : imageUrl
-    }
 
-    for (const iterator of ["Initial", "Incorrect", `@Choice${choiceNumber + 1}`]) {
-        if (!choice[iterator]) {
 
-            switch (iterator) {
-                case "Initial":
-                    element.text += ' \n';
+        for (const iterator of ["Initial", "Incorrect", "Choice1", "Choice2", "Choice3", "Choice4", "Choice5", "Choice6", "Choice7", "Choice8"]) {
+            if (!choice[iterator]) {
+                let element = {
+                    text: message.value,
+                    image: imageUrl.value === "" ? null : imageUrl.value,
+                    keyName: choiceKey.value === "" ? iterator : choiceKey.value
+                }
+
+                if (!globalTag) {
                     var tagInput1 = new TagsInput({
                         selector: 'tag-input1',
                         duplicate: false,
                         max: 10
                     });
                     globalTag = tagInput1.addData([iterator])
-                    break;
-                case "Incorrect":
-                    globalTag.addTag(iterator);
-                    break;
-                default:
-                    globalTag.addTag(iterator);
+                } else globalTag.addTag(iterator);
+
+                if (iterator.includes("Choice"))
                     element.text = ' \t' + element.text;
-                    break;
+                else element.text += ' \n';
+
+                choice[iterator] = element;
+                break;
             }
-            choice[iterator] = element;
-            break;
+            else {
+                if (choice[iterator].keyName.toUpperCase() === choiceKey.value.toUpperCase()) {
+                    document.getElementById("choice").setAttribute("tooltip", 'The choice name already exists');
+                    break;
+                }
+            }
         }
+
+        choiceEnable();
+
+        saveData();
+
+        message.value = "";
+        imageUrl.value = "";
+        choiceKey.value = "";
+    });
+});
+
+
+function choiceEnable() {
+    if (Object.keys(choice).length > 1) {
+        document.getElementById("divChoiceName").style.display = 'block';
+        document.getElementById("txtChoiceName").required = true;
     }
 }
 
@@ -53,6 +77,8 @@ function disable() {
     const check = document.getElementById('chkApi').checked
     document.getElementById("txtMessage").disabled = check;
     document.getElementById("txtImage").disabled = check;
+    document.getElementById("choice").disabled = check;
+    document.getElementById("txtChoiceName").disabled = check;
 }
 
 function confirm() {
@@ -66,13 +92,25 @@ function confirm() {
         }
     }
 
-    if (useApi) return;
+    if (useApi) {
+        chrome.storage.local.set({ WappBot: window.WappBot }, function () {
+            console.log('Value is set to ' + window.WappBot);
+        });
+        document.getElementById("confirm").setAttribute("tooltip", 'API configuration accepted');
+        return;
+    }
+
+    if (Object.keys(choice).length <= 2 || !Object.keys(choice).includes("Initial") || !Object.keys(choice).includes("Incorrect")) {
+        document.getElementById("confirm").setAttribute("tooltip", 'Must contain at least 3 options (initial, incorrect and one choice)');
+        return;
+    }
 
     for (const key in choice) {
         if (choice.hasOwnProperty(key)) {
-            const element = choice[key];
+            const element = Object.assign({}, choice[key]);
             switch (key) {
                 case "Initial":
+                    delete element["keyName"];
                     window.WappBot.configWappBot["messageInitial"] = element;
                     break;
                 case "Incorrect":
@@ -80,16 +118,49 @@ function confirm() {
                     break;
                 default:
                     if (!window.WappBot.configWappBot["messageOption"]) window.WappBot.configWappBot["messageOption"] = {};
-                    window.WappBot.configWappBot["messageOption"][key] = element;
+                    const keyName = element.keyName; delete element["keyName"];
+                    window.WappBot.configWappBot["messageOption"][keyName] = element;
                     break;
             }
         }
     }
-
     chrome.storage.local.set({ WappBot: window.WappBot }, function () {
         console.log('Value is set to ' + window.WappBot);
     });
+
+    document.getElementById("confirm").setAttribute("tooltip", 'Successfully loaded configuration');
 }
+
+// Util data store
+
+function saveData() {
+    chrome.storage.local.set({ StorePopup: { "choice": choice, "useApi": document.getElementById('chkApi').checked } }, function () {
+        console.log('Value is set to ' + JSON.stringify(choice));
+    });
+}
+
+function restoreData() {
+    chrome.storage.local.get(['StorePopup'], function (result) {
+        if (!!result.StorePopup) {
+            console.log(result);
+            choice = result.StorePopup.choice;
+            document.getElementById('chkApi').checked = result.StorePopup.useApi;
+            disable();
+            const keys = Object.keys(choice);
+            if (keys.length > 0) {
+                var tagInput1 = new TagsInput({
+                    selector: 'tag-input1',
+                    duplicate: false,
+                    max: 10
+                });
+                globalTag = tagInput1.addData(keys);
+                choiceEnable();
+            }
+        }
+    });
+
+}
+
 
 // Tags
 
@@ -131,7 +202,14 @@ function loadTags() {
 
     TagsInput.prototype.deleteTag = function (tag, i) {
         tag.remove();
+        const key = this.arr[i];
+        delete choice[key];
         this.arr.splice(i, 1);
+        if (this.arr.length < 2) {
+            document.getElementById("divChoiceName").style.display = 'none';
+            document.getElementById("txtChoiceName").required = false;
+        }
+        saveData();
         this.orignal_input.value = this.arr.join(',');
         return this;
     };
