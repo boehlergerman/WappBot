@@ -1,42 +1,44 @@
 'use strict';
+console.log(window);
 
-
-window.WappBot = {
-  configWappBot: {
-    useApi: false,
-    uriApi: "https://wapp-bot.herokuapp.com/message",
-    ignoreChat: [],
-    messageInitial: {
-      text: "Hello I'm WappBot send a reply \n",
-      image: null
-    },
-    messageIncorrect: "Incorrect option entered, we remind you that the options are: \n",
-    messageOption: {
-      "@Date": {
-        text: new Date().toLocaleDateString(),
+if (!window["WappBot"]) {
+  // Default value
+  window.WappBot = {
+    configWappBot: {
+      useApi: true,
+      uriApi: "https://wapp-bot.herokuapp.com/message",
+      ignoreChat: [],
+      messageInitial: {
+        text: "Hello I'm WappBot send a reply \n",
         image: null
       },
-      "@Christmas": {
-        text: (() => {
-          let myDate = new Date();
-          let cmas = Date.parse("Dec 25, " + myDate.getFullYear())
-          let today = Date.parse(myDate)
+      messageIncorrect: "Incorrect option entered, we remind you that the options are: \n",
+      messageOption: {
+        "@Date": {
+          text: new Date().toLocaleDateString(),
+          image: null
+        },
+        "@Christmas": {
+          text: (() => {
+            let myDate = new Date();
+            let cmas = Date.parse("Dec 25, " + myDate.getFullYear())
+            let today = Date.parse(myDate)
 
-          let daysToChristmas = Math.round((cmas - today) / (1000 * 60 * 60 * 24))
-          if (daysToChristmas == 0)
-            return "Today is Christmas ... Merry Christmas!"
-          if (daysToChristmas < 0)
-            return "Christmas was " + -1 * (daysToChristmas) + " days ago.";
-          if (daysToChristmas > 0)
-            return "There are " + daysToChristmas + " days to Christmas!"
-        })(),
-        image: null
+            let daysToChristmas = Math.round((cmas - today) / (1000 * 60 * 60 * 24))
+            if (daysToChristmas == 0)
+              return "Today is Christmas ... Merry Christmas!"
+            if (daysToChristmas < 0)
+              return "Christmas was " + -1 * (daysToChristmas) + " days ago.";
+            if (daysToChristmas > 0)
+              return "There are " + daysToChristmas + " days to Christmas!"
+          })(),
+          image: null
+        }
       }
     }
   }
+
 }
-
-
 
 /* eslint-disable */
 /**
@@ -370,7 +372,7 @@ window.WappBot.prepareMessageToSend = (chatId, options) => {
     window.WappBot.configWappBot.ignoreChat.push(chatId);
   }
   for (let i = 0; i < options.length; i++)
-    message += `\t ${options[i]} \n`;
+    message += `\t @${options[i]} \n`;
 
   return message;
 }
