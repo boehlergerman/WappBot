@@ -60,7 +60,8 @@ if (!window.Store) {
       let neededObjects = [
         { id: "Store", conditions: (module) => (module.Chat && module.Msg) ? module : null },
         { id: "FromData", conditions: (module) => (module.createFromData) ? module : null },
-        { id: "RawMedia", conditions: (module) => (module.prepRawMedia) ? module : null }
+        { id: "RawMedia", conditions: (module) => (module.prepRawMedia) ? module : null },
+        { id: "UserConstructor", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.isServer && module.default.prototype.isUser) ? module.default : null }
       ];
       for (let idx in modules) {
         if (typeof modules[idx] === 'object' && modules[idx] !== null) {

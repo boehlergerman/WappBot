@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        choiceEnable();
+        choiceSetting();
 
         saveData();
 
@@ -66,10 +66,14 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-function choiceEnable() {
-    if (Object.keys(choice).length > 1) {
+function choiceSetting() {
+    if (Object.keys(choice).includes("Initial") && Object.keys(choice).includes("Incorrect")) {
         document.getElementById("divChoiceName").style.display = 'block';
         document.getElementById("txtChoiceName").required = true;
+    } else {
+        document.getElementById("txtChoiceName").value = "";
+        document.getElementById("divChoiceName").style.display = 'none';
+        document.getElementById("txtChoiceName").required = false;
     }
 }
 
@@ -154,7 +158,7 @@ function restoreData() {
                     max: 10
                 });
                 globalTag = tagInput1.addData(keys);
-                choiceEnable();
+                choiceSetting();
             }
         }
     });
@@ -205,10 +209,7 @@ function loadTags() {
         const key = this.arr[i];
         delete choice[key];
         this.arr.splice(i, 1);
-        if (this.arr.length < 2) {
-            document.getElementById("divChoiceName").style.display = 'none';
-            document.getElementById("txtChoiceName").required = false;
-        }
+        choiceSetting();
         saveData();
         this.orignal_input.value = this.arr.join(',');
         return this;
