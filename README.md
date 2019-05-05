@@ -11,6 +11,8 @@ The main objective is to present a simple implementation without the need for la
 To start it is necessary to have a registered instance of whatsapp web, and then copy the code contained in the file WappBot.js (See the configuration section for more details, otherwise the code contains default settings).
 Once copied and configured correctly, open your browser console <kbd>F12</kbd> and paste the code.
 
+for more information go to the wiki - [WIKI](https://github.com/boehlergerman/WappBot/wiki)
+
 ### Prerequisites
 
 you must have a valid whatsapp account and access to whatsapp web
@@ -97,9 +99,20 @@ Whatsapp Web contains meta tag that avoids that from the context of the site are
 Therefore, the use of URLAPI or IMAGE configuration in URL format and not Base64 will lead to an error in the console when you receive an incoming message.
 This problem can be solved by installing an extension in your browser that removes the security of CSP and thus be able to use the full potential of HTTPS and HTTP requests within the context of Whatsapp Web.
 
-[Disalbe CSP Extension recommend](https://bit.ly/2FFEnkT)
+[Disable CSP Extension recommend](https://bit.ly/2FFEnkT)
 
 Otherwise you should use applications such as NWJS or Electron that simulate a context above whatsapp web.
+
+## Wappbot extension for google chrome
+
+Wappbot also exists in extension format for google chrome that allows you to use without knowing javascript, *also add the functionality to disable CSP automatically*
+
+> link to the chrome play store: [Play store](https://chrome.google.com/webstore/detail/wappbot/kfoipoajagcbedgamieppifonpbhnbkd)
+
+> link to the wiki to know how to use it: [Wiki extension chrome](https://github.com/boehlergerman/WappBot/wiki/how-to-use-it-with-extension)
+
+![_](https://camo.githubusercontent.com/0828200a8808e85d6eb7ebdc00f5782832bb6ebf/68747470733a2f2f692e6962622e636f2f3330625132314c2f57617070426f74312e706e67)
+
 
 ## Examples and results
  ##### starting
