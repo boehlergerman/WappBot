@@ -115,13 +115,25 @@ Wappbot also exists in extension format for google chrome that allows you to use
 
 
 ## Examples and results
- ##### starting
+ ##### starting using script in console
 
-![ ](https://media.giphy.com/media/1VVaEQKSVytuNF1jJz/giphy.gif)
+![ ](https://media.giphy.com/media/WpUY2bTxcC5XkCeo7w/giphy.gif)
 
-##### results with default settings
+##### starting using extension chrome, Choice Settings
 
-![ ](https://media.giphy.com/media/BZhzk2WiFuaB7g2cRp/giphy.gif)
+[![_](https://i.ibb.co/XbBRNDW/2020-02-08-22-47-20-Screen-Recording-08-Feb-20-7-37-03-PM-wmv.png)](https://imgur.com/xtaK7hV)
+
+##### starting using extension chrome, WappBot API with DialogFlow (Spanish)
+
+![ ](https://media.giphy.com/media/gFb1rPzQ2UrIrvMB9b/giphy.gif)
+
+```sh
+    useApi: true,
+    uriApi: "https://wapp-bot.herokuapp.com/message"
+```
+
+![ ](https://media.giphy.com/media/d563lgarun9cSispf3/giphy.gif)
+
 
 ##### results with image configuration, remember to disable CSP
 
@@ -142,16 +154,8 @@ Wappbot also exists in extension format for google chrome that allows you to use
       }
     }
 ```
-![ ](https://media.giphy.com/media/5z9tVCWPbVH1YHtLJS/giphy.gif)
+![ ](https://media.giphy.com/media/LoNnXqcxsvz22p64OS/giphy.gif)
 
-##### results using WappBot API, only works in Spanish 
-
-```sh
-    useApi: true,
-    uriApi: "https://wapp-bot.herokuapp.com/message"
-```
-
-![ ](https://media.giphy.com/media/2wV5JpcAVuzOIrVnRb/giphy.gif)
 
 ## Authors
 
