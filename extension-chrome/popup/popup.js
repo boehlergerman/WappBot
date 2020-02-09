@@ -7,10 +7,11 @@ var globalTag;
 document.addEventListener('DOMContentLoaded', function () {
     loadTags();
     restoreData();
-
+    document.getElementById("txtUrlAPI").style.display = "none";
     document.getElementById("chkApi").addEventListener("click", () => {
         disable();
         saveData();
+        showUrlAPi();
     });
     document.getElementById("confirm").addEventListener("click", confirm);
     document.getElementById("formChoice").addEventListener("submit", (e) => {
@@ -85,13 +86,18 @@ function disable() {
     document.getElementById("txtChoiceName").disabled = check;
 }
 
+function showUrlAPi() {
+    const chboxs = document.getElementById("chkApi");
+    document.getElementById("txtUrlAPI").style.display = chboxs.checked ? "block" : "none";
+}
+
 function confirm() {
     const useApi = document.getElementById('chkApi').checked
 
     window.WappBot = {
         configWappBot: {
             useApi: useApi,
-            uriApi: "https://wapp-bot.herokuapp.com/message",
+            uriApi: document.getElementById("txtUrlAPI").value,
             ignoreChat: []
         }
     }
@@ -100,7 +106,7 @@ function confirm() {
         chrome.storage.local.set({ WappBot: window.WappBot }, function () {
             console.log('Value is set to ' + window.WappBot);
         });
-        document.getElementById("confirm").setAttribute("tooltip", 'API configuration accepted');
+        document.getElementById("confirm").setAttribute("tooltip", 'API configuration accepted, refresh Whatsapp Web Please');
         return;
     }
 
@@ -132,7 +138,7 @@ function confirm() {
         console.log('Value is set to ' + window.WappBot);
     });
 
-    document.getElementById("confirm").setAttribute("tooltip", 'Successfully loaded configuration');
+    document.getElementById("confirm").setAttribute("tooltip", 'Successfully loaded configuration, refresh Whatsapp Web Please');
 }
 
 // Util data store

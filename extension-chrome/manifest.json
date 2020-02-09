@@ -1,7 +1,7 @@
 {
   "name": "WappBot",
   "description": "Automatic answering of incoming messages by means of javascript and using Whatsapp Web",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "author": "Boehler German",
   "homepage_url": "https://github.com/boehlergerman/WappBot",
   "manifest_version": 2,

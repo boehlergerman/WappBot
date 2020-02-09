@@ -1,43 +1,65 @@
 <html>
-
-<head>
+  <head>
     <title>WappBot</title>
     <script src="popup.js"></script>
     <link rel="stylesheet" type="text/css" href="popup.css" />
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>WappBot</h1>
     <div class="container style">
-        <span>Use WappBot API?</span>
-        <input id="chkApi" type="checkbox">
-        <label for="chkApi"></label>
+      <span>Use WappBot API?</span>
+      <input id="chkApi" type="checkbox"/>
+      <label for="chkApi"></label>
+      <input
+        id="txtUrlAPI"
+        name="UrlApi"
+        autocomplete="off"
+        type="text"
+        placeholder="Url API"
+        value="https://wapp-bot.herokuapp.com/message"
+        pattern="(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?"
+      />
     </div>
     <form id="formChoice" action="#0">
-        <div id="divChoiceName" class="container style subcontainer">
-            <input id="txtChoiceName" name="ChoiceName" autocomplete="off" type="text" placeholder="Choice Name"
-                pattern="^([^0-9]*)$" />
-        </div>
-        <div class="container style subcontainer">
-            <textarea id="txtMessage" name="Message" autocomplete="off" placeholder="Message" minlength="10"
-                required></textarea>
-        </div>
-        <div class="container style subcontainer">
-            <input id="txtImage" type="text" autocomplete="off" placeholder="Image Only URL" pattern='(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?' />
-        </div>
-        <div class="container subcontainer">
-            <button tooltip="" id="choice" type="submit" value="Add Choice">Add Choice</button>
-        </div>
+      <div id="divChoiceName" class="container style subcontainer">
+        <input
+          id="txtChoiceName"
+          name="ChoiceName"
+          autocomplete="off"
+          type="text"
+          placeholder="Choice Name"
+        />
+      </div>
+      <div class="container style subcontainer">
+        <textarea
+          id="txtMessage"
+          name="Message"
+          autocomplete="off"
+          placeholder="Message"
+          minlength="10"
+          required
+        ></textarea>
+      </div>
+      <div class="container style subcontainer">
+        <input
+          id="txtImage"
+          type="text"
+          autocomplete="off"
+          placeholder="Image Only URL"
+          pattern="(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?"
+        />
+      </div>
+      <div class="container subcontainer">
+        <button tooltip="" id="choice" type="submit" value="Add Choice">Add Choice</button>
+      </div>
     </form>
 
-
     <div class="container style">
-        <input type="text" id="tag-input1">
+      <input type="text" id="tag-input1" />
     </div>
     <div class="container" id="divConfirm">
-        <button tooltip="" id="confirm" type="submit" value="Confirm Setting">Confirm Setting</button>
+      <button tooltip="" id="confirm" type="submit" value="Confirm Setting">Confirm Setting</button>
     </div>
-
-</body>
-
+  </body>
 </html>

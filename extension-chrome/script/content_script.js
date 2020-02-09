@@ -37,7 +37,7 @@ function injectCode(code, tag) {
 function start() {
     try {
         console.log('[Info]: waiting for whatsapp start');
-        var elementOfInterest = document.getElementsByClassName('_2umId');
+        var elementOfInterest = document.getElementsByClassName('_3RWII');
         if (elementOfInterest.length > 0) {
             isCSPDisabled = !isCSPDisabled;
 
@@ -52,7 +52,7 @@ function start() {
         }
         else timerId = window.setTimeout(start, pollInterval);
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }
 
