@@ -37,7 +37,7 @@ function injectCode(code, tag) {
 function start() {
     try {
         console.log('[Info]: waiting for whatsapp start');
-        var elementOfInterest = document.getElementsByClassName('_3RWII');
+        var elementOfInterest = document.getElementsByClassName('_3ZW2E');
         if (elementOfInterest.length > 0) {
             isCSPDisabled = !isCSPDisabled;
 
