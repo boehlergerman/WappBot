@@ -1,20 +1,20 @@
 "use strict";
 
-
 window.WappBot = {
   configWappBot: {
     useApi: false,
     uriApi: "https://wapp-bot.herokuapp.com/message",
     ignoreChat: [],
+    ignoreGroupChat: false,
     messageInitial: {
       text: "Hello I'm WappBot send a reply \n",
-      image: null
+      image: null,
     },
     messageIncorrect: "Incorrect option entered, we remind you that the options are: \n",
     messageOption: {
       "@Date": {
         text: new Date().toLocaleDateString(),
-        image: null
+        image: null,
       },
       "@Christmas": {
         text: (() => {
@@ -27,12 +27,11 @@ window.WappBot = {
           if (daysToChristmas < 0) return "Christmas was " + -1 * daysToChristmas + " days ago.";
           if (daysToChristmas > 0) return "There are " + daysToChristmas + " days to Christmas!";
         })(),
-        image: null
-      }
-    }
-  }
+        image: null,
+      },
+    },
+  },
 };
-
 
 /* eslint-disable */
 /**
@@ -49,90 +48,129 @@ if (!window["webpackJsonp"]) {
 
 if (!window.Store) {
   (function () {
-      function getStore(modules) {
-          let foundCount = 0;
-          let neededObjects = [
-              { id: "Store", conditions: (module) => (module.default && module.default.Chat && module.default.Msg) ? module.default : null },
-              { id: "MediaCollection", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.processAttachments) ? module.default : null },
-              { id: "MediaProcess", conditions: (module) => (module.BLOB) ? module : null },
-              { id: "Wap", conditions: (module) => (module.createGroup) ? module : null },
-              { id: "ServiceWorker", conditions: (module) => (module.default && module.default.killServiceWorker) ? module : null },
-              { id: "State", conditions: (module) => (module.STATE && module.STREAM) ? module : null },
-              { id: "WapDelete", conditions: (module) => (module.sendConversationDelete && module.sendConversationDelete.length == 2) ? module : null },
-              { id: "Conn", conditions: (module) => (module.default && module.default.ref && module.default.refTTL) ? module.default : null },
-              { id: "WapQuery", conditions: (module) => (module.queryExist) ? module : ((module.default && module.default.queryExist) ? module.default : null) },
-              { id: "CryptoLib", conditions: (module) => (module.decryptE2EMedia) ? module : null },
-              { id: "OpenChat", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.openChat) ? module.default : null },
-              { id: "UserConstructor", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.isServer && module.default.prototype.isUser) ? module.default : null },
-              { id: "SendTextMsgToChat", conditions: (module) => (module.sendTextMsgToChat) ? module.sendTextMsgToChat : null },
-              { id: "SendSeen", conditions: (module) => (module.sendSeen) ? module.sendSeen : null },
-              { id: "sendDelete", conditions: (module) => (module.sendDelete) ? module.sendDelete : null }
-          ];
-          for (let idx in modules) {
-              if ((typeof modules[idx] === "object") && (modules[idx] !== null)) {
-                  let first = Object.values(modules[idx])[0];
-                  if ((typeof first === "object") && (first.exports)) {
-                      for (let idx2 in modules[idx]) {
-                          let module = modules(idx2);
-                          if (!module) {
-                              continue;
-                          }
-                          neededObjects.forEach((needObj) => {
-                              if (!needObj.conditions || needObj.foundedModule)
-                                  return;
-                              let neededModule = needObj.conditions(module);
-                              if (neededModule !== null) {
-                                  foundCount++;
-                                  needObj.foundedModule = neededModule;
-                              }
-                          });
-                          if (foundCount == neededObjects.length) {
-                              break;
-                          }
-                      }
-
-                      let neededStore = neededObjects.find((needObj) => needObj.id === "Store");
-                      window.Store = neededStore.foundedModule ? neededStore.foundedModule : {};
-                      neededObjects.splice(neededObjects.indexOf(neededStore), 1);
-                      neededObjects.forEach((needObj) => {
-                          if (needObj.foundedModule) {
-                              window.Store[needObj.id] = needObj.foundedModule;
-                          }
-                      });
-                       window.Store.sendMessage = function (e) {
-                          return window.Store.SendTextMsgToChat(this, ...arguments);
-                      }
-                      return window.Store;
-                  }
+    function getStore(modules) {
+      let foundCount = 0;
+      let neededObjects = [
+        {
+          id: "Store",
+          conditions: (module) => (module.default && module.default.Chat && module.default.Msg ? module.default : null),
+        },
+        {
+          id: "MediaCollection",
+          conditions: (module) =>
+            module.default && module.default.prototype && module.default.prototype.processAttachments
+              ? module.default
+              : null,
+        },
+        { id: "MediaProcess", conditions: (module) => (module.BLOB ? module : null) },
+        { id: "Wap", conditions: (module) => (module.createGroup ? module : null) },
+        {
+          id: "ServiceWorker",
+          conditions: (module) => (module.default && module.default.killServiceWorker ? module : null),
+        },
+        { id: "State", conditions: (module) => (module.STATE && module.STREAM ? module : null) },
+        {
+          id: "WapDelete",
+          conditions: (module) =>
+            module.sendConversationDelete && module.sendConversationDelete.length == 2 ? module : null,
+        },
+        {
+          id: "Conn",
+          conditions: (module) =>
+            module.default && module.default.ref && module.default.refTTL ? module.default : null,
+        },
+        {
+          id: "WapQuery",
+          conditions: (module) =>
+            module.queryExist ? module : module.default && module.default.queryExist ? module.default : null,
+        },
+        { id: "CryptoLib", conditions: (module) => (module.decryptE2EMedia ? module : null) },
+        {
+          id: "OpenChat",
+          conditions: (module) =>
+            module.default && module.default.prototype && module.default.prototype.openChat ? module.default : null,
+        },
+        {
+          id: "UserConstructor",
+          conditions: (module) =>
+            module.default &&
+            module.default.prototype &&
+            module.default.prototype.isServer &&
+            module.default.prototype.isUser
+              ? module.default
+              : null,
+        },
+        {
+          id: "SendTextMsgToChat",
+          conditions: (module) => (module.sendTextMsgToChat ? module.sendTextMsgToChat : null),
+        },
+        { id: "SendSeen", conditions: (module) => (module.sendSeen ? module.sendSeen : null) },
+        { id: "sendDelete", conditions: (module) => (module.sendDelete ? module.sendDelete : null) },
+      ];
+      for (let idx in modules) {
+        if (typeof modules[idx] === "object" && modules[idx] !== null) {
+          let first = Object.values(modules[idx])[0];
+          if (typeof first === "object" && first.exports) {
+            for (let idx2 in modules[idx]) {
+              let module = modules(idx2);
+              if (!module) {
+                continue;
               }
-          }
-      }
+              neededObjects.forEach((needObj) => {
+                if (!needObj.conditions || needObj.foundedModule) return;
+                let neededModule = needObj.conditions(module);
+                if (neededModule !== null) {
+                  foundCount++;
+                  needObj.foundedModule = neededModule;
+                }
+              });
+              if (foundCount == neededObjects.length) {
+                break;
+              }
+            }
 
-      //webpackJsonp([], { 'parasite': (x, y, z) => getStore(z) }, ['parasite']);
-      /*
+            let neededStore = neededObjects.find((needObj) => needObj.id === "Store");
+            window.Store = neededStore.foundedModule ? neededStore.foundedModule : {};
+            neededObjects.splice(neededObjects.indexOf(neededStore), 1);
+            neededObjects.forEach((needObj) => {
+              if (needObj.foundedModule) {
+                window.Store[needObj.id] = needObj.foundedModule;
+              }
+            });
+            window.Store.sendMessage = function (e) {
+              return window.Store.SendTextMsgToChat(this, ...arguments);
+            };
+            return window.Store;
+          }
+        }
+      }
+    }
+
+    //webpackJsonp([], { 'parasite': (x, y, z) => getStore(z) }, ['parasite']);
+    /*
       Code update
       */
-      if (typeof webpackJsonp === 'function') {
-      webpackJsonp([], {'parasite': (x, y, z) => getStore(z)}, ['parasite']);
-          } else {
-              webpackJsonp.push([
-                  ['parasite'],
-                  {
-                      parasite: function (o, e, t) {
-                          getStore(t);
-                      }
-                  },
-                  [['parasite']]
-              ]);
-          }
+    if (typeof webpackJsonp === "function") {
+      webpackJsonp([], { parasite: (x, y, z) => getStore(z) }, ["parasite"]);
+    } else {
+      webpackJsonp.push([
+        ["parasite"],
+        {
+          parasite: function (o, e, t) {
+            getStore(t);
+          },
+        },
+        [["parasite"]],
+      ]);
+    }
   })();
 }
 
 window.WAPI = {
-  lastRead: {}
+  lastRead: {},
 };
 
-window.WAPI._serializeRawObj = obj => {
+window.WAPI._serializeRawObj = (obj) => {
   if (obj) {
     return obj.toJSON();
   }
@@ -146,7 +184,7 @@ window.WAPI._serializeRawObj = obj => {
  * @returns {{}}
  */
 
-window.WAPI._serializeChatObj = obj => {
+window.WAPI._serializeChatObj = (obj) => {
   if (obj == undefined) {
     return null;
   }
@@ -157,11 +195,11 @@ window.WAPI._serializeChatObj = obj => {
     contact: obj["contact"] ? window.WAPI._serializeContactObj(obj["contact"]) : null,
     groupMetadata: obj["groupMetadata"] ? window.WAPI._serializeRawObj(obj["groupMetadata"]) : null,
     presence: obj["presence"] ? window.WAPI._serializeRawObj(obj["presence"]) : null,
-    msgs: null
+    msgs: null,
   });
 };
 
-window.WAPI._serializeContactObj = obj => {
+window.WAPI._serializeContactObj = (obj) => {
   if (obj == undefined) {
     return null;
   }
@@ -177,11 +215,11 @@ window.WAPI._serializeContactObj = obj => {
     isWAContact: obj.isWAContact,
     profilePicThumbObj: obj.profilePicThumb ? WAPI._serializeProfilePicThumb(obj.profilePicThumb) : {},
     statusMute: obj.statusMute,
-    msgs: null
+    msgs: null,
   });
 };
 
-window.WAPI._serializeMessageObj = obj => {
+window.WAPI._serializeMessageObj = (obj) => {
   if (obj == undefined) {
     return null;
   }
@@ -201,11 +239,11 @@ window.WAPI._serializeMessageObj = obj => {
     chat: WAPI._serializeChatObj(obj["chat"]),
     chatId: obj.id.remote,
     quotedMsgObj: WAPI._serializeMessageObj(obj["_quotedMsgObj"]),
-    mediaData: window.WAPI._serializeRawObj(obj["mediaData"])
+    mediaData: window.WAPI._serializeRawObj(obj["mediaData"]),
   });
 };
 
-window.WAPI._serializeNumberStatusObj = obj => {
+window.WAPI._serializeNumberStatusObj = (obj) => {
   if (obj == undefined) {
     return null;
   }
@@ -216,12 +254,12 @@ window.WAPI._serializeNumberStatusObj = obj => {
       id: obj.jid,
       status: obj.status,
       isBusiness: obj.biz === true,
-      canReceiveMessage: obj.status === 200
+      canReceiveMessage: obj.status === 200,
     }
   );
 };
 
-window.WAPI._serializeProfilePicThumb = obj => {
+window.WAPI._serializeProfilePicThumb = (obj) => {
   if (obj == undefined) {
     return null;
   }
@@ -234,7 +272,7 @@ window.WAPI._serializeProfilePicThumb = obj => {
       img: obj.img,
       imgFull: obj.imgFull,
       raw: obj.raw,
-      tag: obj.tag
+      tag: obj.tag,
     }
   );
 };
@@ -245,12 +283,12 @@ window.WAPI._serializeProfilePicThumb = obj => {
  * @param id ID of chat
  * @returns {T|*} Chat object
  */
-window.WAPI.getChat = function(id) {
+window.WAPI.getChat = function (id) {
   id = typeof id == "string" ? id : id._serialized;
   const found = window.Store.Chat.get(id);
   found.sendMessage = found.sendMessage
     ? found.sendMessage
-    : function() {
+    : function () {
         return window.Store.sendMessage.apply(this, arguments);
       };
   return found;
@@ -261,12 +299,12 @@ window.WAPI.getChat = function(id) {
  *
  * @returns {Array|*} List of chat id's
  */
-window.WAPI.getAllChatIds = function() {
-  const chatIds = window.Store.Chat.map(chat => chat.id._serialized || chat.id);
+window.WAPI.getAllChatIds = function () {
+  const chatIds = window.Store.Chat.map((chat) => chat.id._serialized || chat.id);
   return chatIds;
 };
 
-window.WAPI.processMessageObj = function(messageObj, includeMe, includeNotifications) {
+window.WAPI.processMessageObj = function (messageObj, includeMe, includeNotifications) {
   if (messageObj.isNotification) {
     if (includeNotifications) return WAPI._serializeMessageObj(messageObj);
     else return;
@@ -278,11 +316,13 @@ window.WAPI.processMessageObj = function(messageObj, includeMe, includeNotificat
   return;
 };
 
-window.WAPI.sendImage = async function(imgBase64, chatid, filename, caption) {
+window.WAPI.sendImage = async function (imgBase64, chatid, filename, caption) {
   let id = chatid;
-  if (!window.WAPI.getAllChatIds().find(chat => chat == chatid))
+  if (!window.WAPI.getAllChatIds().find((chat) => chat == chatid))
     id = new window.Store.UserConstructor(chatid, { intentionallyUsePrivateConstructor: true });
   var chat = WAPI.getChat(id);
+  // Ignore Group Chat
+  if (WAPI._serializeChatObj(chat).isGroup && window.WappBot.configWappBot.ignoreGroupChat) return;
   // create new chat
   try {
     var mediaBlob = await window.WAPI.base64ImageToFile(imgBase64, filename);
@@ -303,7 +343,7 @@ window.WAPI.sendImage = async function(imgBase64, chatid, filename, caption) {
     let mediaBlob = await window.WAPI.base64ImageToFile(imgBase64, filename);
     var mc = new Store.MediaCollection(chat);
     chat = WAPI.getChat(id);
-    mc.processAttachments([{file: mediaBlob}, 1], chat, 1).then(() => {
+    mc.processAttachments([{ file: mediaBlob }, 1], chat, 1).then(() => {
       let media = mc.models[0];
       media.sendToChat(chat, { caption: caption });
     });
@@ -311,8 +351,8 @@ window.WAPI.sendImage = async function(imgBase64, chatid, filename, caption) {
   }
 };
 
-window.WAPI.base64ImageToFile = function(image, filename) {
-  return new Promise(async resolve => {
+window.WAPI.base64ImageToFile = function (image, filename) {
+  return new Promise(async (resolve) => {
     if (!image.includes("base64")) {
       image = await window.WappBot.toDataURL("https://cors-anywhere.herokuapp.com/" + image); // convert url in base64
     }
@@ -328,11 +368,12 @@ window.WAPI.base64ImageToFile = function(image, filename) {
   });
 };
 
-window.WAPI.sendMessage = function(idChat, message) {
+window.WAPI.sendMessage = function (idChat, message) {
   let id = idChat;
-  if (!window.WAPI.getAllChatIds().find(chat => chat == idChat))
+  if (!window.WAPI.getAllChatIds().find((chat) => chat == idChat))
     id = new window.Store.UserConstructor(idChat, { intentionallyUsePrivateConstructor: true });
   var chat = WAPI.getChat(id);
+  if (WAPI._serializeChatObj(chat).isGroup && window.WappBot.configWappBot.ignoreGroupChat) return;
   try {
     // create new chat
     return chat.sendMessage(message);
@@ -351,12 +392,12 @@ window.WAPI.sendMessage = function(idChat, message) {
   }
 };
 
-window.WappBot.toDataURL = url => {
-  return new Promise(resolve => {
+window.WappBot.toDataURL = (url) => {
+  return new Promise((resolve) => {
     var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
+    xhr.onload = function () {
       var reader = new FileReader();
-      reader.onloadend = function() {
+      reader.onloadend = function () {
         resolve(reader.result);
       };
       reader.readAsDataURL(xhr.response);
@@ -372,11 +413,11 @@ window.WappBot.sendByAPIWappBot = (newMessage, chatId) => {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ messageText: newMessage })
-  }).then(function(response) {
-    response.json().then(post => {
+    body: JSON.stringify({ messageText: newMessage }),
+  }).then(function (response) {
+    response.json().then((post) => {
       if (!post && !post.messageResponse) return;
       window.WAPI.sendMessage(chatId, post.messageResponse);
     });
@@ -429,7 +470,7 @@ window.WAPI._newMessagesCallbacks = [];
 window.Store.Msg.off("add");
 sessionStorage.removeItem("saved_msgs");
 
-window.WAPI._newMessagesListener = window.Store.Msg.on("add", newMessage => {
+window.WAPI._newMessagesListener = window.Store.Msg.on("add", (newMessage) => {
   if (newMessage && newMessage.isNewMsg && !newMessage.isSentByMe) {
     let message = window.WAPI.processMessageObj(newMessage, false, false);
     if (message) {
@@ -440,15 +481,15 @@ window.WAPI._newMessagesListener = window.Store.Msg.on("add", newMessage => {
   }
 });
 
-window.WAPI._unloadInform = event => {
+window.WAPI._unloadInform = (event) => {
   // Save in the buffer the ungot unreaded messages
-  window.WAPI._newMessagesBuffer.forEach(message => {
-    Object.keys(message).forEach(key => (message[key] === undefined ? delete message[key] : ""));
+  window.WAPI._newMessagesBuffer.forEach((message) => {
+    Object.keys(message).forEach((key) => (message[key] === undefined ? delete message[key] : ""));
   });
   sessionStorage.setItem("saved_msgs", JSON.stringify(window.WAPI._newMessagesBuffer));
 
   // Inform callbacks that the page will be reloaded.
-  window.WAPI._newMessagesCallbacks.forEach(function(callbackObj) {
+  window.WAPI._newMessagesCallbacks.forEach(function (callbackObj) {
     if (callbackObj.callback !== undefined) {
       callbackObj.callback({ status: -1, message: "page will be reloaded, wait and register callback again." });
     }
