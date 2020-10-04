@@ -26,6 +26,7 @@ Default configuration:
     useApi: false,
     uriApi: "https://wapp-bot.herokuapp.com/message",
     ignoreChat: [],
+    ignoreGroupChat: false,
     messageInitial: {
       text: "Hello I'm WappBot send a reply \n",
       image: null
@@ -65,6 +66,8 @@ Options:
   
   ignoreChat               [Array] prevents repeated messages, preventing a "hello" from being sent again
                            when an incorrect option is entered
+  
+  ignoreGroupChat          [Bool] [Default false] prevents automatic message sending if the chat is a group
   
   messageInitial           [Object] configuration of the first message to be sent to the chat
     |                      that generated an incoming message
